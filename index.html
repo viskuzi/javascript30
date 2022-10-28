@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mouse Shadow</title>
+</head>
+<body>
+
+  <div class="hero">
+    <h1 contenteditable>🔥WOAH!</h1>
+  </div>
+
+  <style>
+  html {
+    color: black;
+    font-family: sans-serif;
+  }
+
+  body {
+    margin: 0;
+  }
+
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: black;
+  }
+
+  h1 {
+    text-shadow: 10px 10px 0 rgba(0,0,0,1);
+    font-size: 100px;
+  }
+  </style>
+
+<script>
+  const hero = document.querySelector('.hero');
+  const text  = hero.querySelector('h1');
+  const walk = 100; // 100px
+
+
+  function shadow(e) {
+    const { offsetWidth: width, offsetHeight: height } = hero; // тут происходит переименование свойств в обьекте hero и деструктуризация
+    let { offsetX: x, offsetY: y } = e;
+    // console.log(this, e.target) // this here - object hero, e.target - object on which we pointing the mouse
+
+    if (this !== e.target) {
+      x = x + e.target.offsetLeft;
+      y = y + e.target.offsetTop;
+    }
+    
+
+    const xWalk = Math.round((x / width * walk) - (walk / 2)); // согласно этой формуле xwalk будет от -50 до 50
+    const yWalk = Math.round((y / height * walk) - (walk / 2)); // аналогично
+    
+    text.style.textShadow = `
+    ${xWalk}px ${yWalk}px 1px brown,
+    ${xWalk * -1}px ${yWalk}px 1px yellow,
+    ${xWalk}px ${yWalk * -1}px 1px blue,
+    ${yWalk * -1}px ${xWalk}px 1px green
+    `; // 1px - это градус размытия тени
+  }
+  hero.addEventListener('mousemove', shadow)
+
+</script>
+</body>
+</html>
